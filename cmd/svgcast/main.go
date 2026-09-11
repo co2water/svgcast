@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"runtime/debug"
 	"strings"
 	"time"
 
@@ -20,8 +21,19 @@ import (
 	"github.com/co2water/svgcast/internal/term"
 )
 
-// version 由 -ldflags 在建置時注入。
+// version 由 goreleaser 的 -ldflags 注入；`go install …@vX.Y.Z` 不會經過 ldflags，
+// 那條路改讀模組的 build info，使用者回報問題時才有真正的版本號而不是 "dev"。
 var version = "dev"
+
+func versionString() string {
+	if version != "dev" {
+		return version
+	}
+	if bi, ok := debug.ReadBuildInfo(); ok && bi.Main.Version != "" && bi.Main.Version != "(devel)" {
+		return bi.Main.Version
+	}
+	return version
+}
 
 func main() {
 	if err := run(); err != nil {
@@ -60,7 +72,7 @@ func run() error {
 	}
 
 	if *showVer {
-		fmt.Println("svgcast", version)
+		fmt.Println("svgcast", versionString())
 		return nil
 	}
 	if fs.NArg() != 1 {
