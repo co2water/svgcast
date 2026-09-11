@@ -1,0 +1,7 @@
+{"version": 2, "width": 80, "height": 24, "timestamp": 1700000000, "title": "powerline prompt regression", "env": {"TERM": "xterm-256color"}}
+[0.100000, "o", "\u001b[38;5;250;48;5;240m \ue0a0 \u001b[0m\u001b[38;5;250;48;5;240m~/src \u001b[0m\u001b[38;5;240;48;5;236m\ue0b0\u001b[0m"]
+[0.200000, "o", "\u001b[38;5;250;48;5;236m \ue0a0 main \u001b[0m\u001b[38;5;236;49m\ue0b0\u001b[0m "]
+[0.900000, "o", "git status"]
+[1.400000, "o", "\r\n"]
+[1.450000, "o", "On branch main\r\nnothing to commit, working tree clean\r\n"]
+[2.000000, "o", "\u001b[38;5;250;48;5;240m~/src \u001b[0m\u001b[38;5;240;48;5;236m\ue0b0\u001b[0m\u001b[38;5;250;48;5;236m \ue0a0 main \u001b[0m\u001b[38;5;236;49m\ue0b0\u001b[0m "]

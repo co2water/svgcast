@@ -1,0 +1,35 @@
+{
+  "name": "svgcast",
+  "version": "0.1.0",
+  "description": "Turn asciinema recordings into small, crisp animated SVGs for your README",
+  "keywords": [
+    "asciinema",
+    "asciicast",
+    "terminal",
+    "svg",
+    "animation",
+    "readme",
+    "gif-alternative",
+    "screencast"
+  ],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/co2water/svgcast.git"
+  },
+  "homepage": "https://github.com/co2water/svgcast#readme",
+  "bin": {
+    "svgcast": "bin/svgcast.js"
+  },
+  "files": [
+    "bin/",
+    "install.js",
+    "README.md"
+  ],
+  "scripts": {
+    "postinstall": "node install.js"
+  },
+  "engines": {
+    "node": ">=16"
+  }
+}

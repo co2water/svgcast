@@ -1,0 +1,8 @@
+/bin/
+dist/
+npm/bin/svgcast
+npm/bin/svgcast.exe
+npm/*.tgz
+*.test
+*.out
+.DS_Store

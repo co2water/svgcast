@@ -1,0 +1,27 @@
+<!doctype html><meta charset="utf-8"><title>A3 theme spike</title>
+<!--
+  A3 spike：SVG 內部的 @media (prefers-color-scheme) 在 <img> 情境下有沒有效。
+  結果（2026-09-08，Chromium）：三種載入方式全部通過，含 <img src>。
+  重跑：C:/MyCompany/.claude/launch.json 裡的 "spike-theme"，或
+       python -m http.server 8765 --directory docs/spike-theme
+  注意：頁尾的 matchMedia 那行是載入當下算一次的，切主題後不會更新，別被誤導。
+-->
+<style>
+ body{font:13px/1.5 monospace;background:#f6f8fa;color:#111;margin:16px}
+ @media (prefers-color-scheme: dark){body{background:#161b22;color:#e6edf3}}
+ h4{margin:14px 0 4px}
+ .ctx{border:1px dashed #999;padding:8px;display:inline-block}
+</style>
+<h3>A3 spike — prefers-color-scheme inside SVG</h3>
+<h4>1. &lt;img src&gt; ← GitHub README 用的就是這個</h4>
+<div class="ctx"><img id="asimg" src="theme.svg" width="380" height="110"></div>
+<h4>2. inline &lt;svg&gt; (對照組，理應可行)</h4>
+<div class="ctx" id="inline">loading…</div>
+<h4>3. &lt;object&gt; (對照組)</h4>
+<div class="ctx"><object data="theme.svg" type="image/svg+xml" width="380" height="110"></object></div>
+<pre id="out"></pre>
+<script>
+fetch('theme.svg').then(r=>r.text()).then(t=>{document.getElementById('inline').innerHTML=t;});
+document.getElementById('out').textContent =
+  'matchMedia(prefers-color-scheme: dark) = ' + window.matchMedia('(prefers-color-scheme: dark)').matches;
+</script>

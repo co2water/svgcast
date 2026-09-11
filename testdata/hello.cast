@@ -1,0 +1,7 @@
+{"version": 2, "width": 80, "height": 24, "timestamp": 1700000000, "env": {"SHELL": "/bin/bash", "TERM": "xterm-256color"}}
+[0.100000, "o", "$ "]
+[0.480000, "o", "echo hello"]
+[0.930000, "o", "\r\n"]
+[0.940000, "o", "hello\r\n"]
+[1.100000, "o", "$ "]
+[2.400000, "o", "exit\r\n"]

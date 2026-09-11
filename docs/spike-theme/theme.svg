@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="380" height="110" viewBox="0 0 380 110">
+  <style>
+    .bg { fill: #ffffff; stroke: #cccccc; stroke-width: 2; }
+    .fg { fill: #111111; }
+    .lbl-dark  { visibility: hidden; }
+    .lbl-light { visibility: visible; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #0d1117; stroke: #30363d; }
+      .fg { fill: #e6edf3; }
+      .lbl-dark  { visibility: visible; }
+      .lbl-light { visibility: hidden; }
+    }
+  </style>
+  <rect class="bg" x="1" y="1" width="378" height="108" rx="8"/>
+  <text class="fg lbl-light" x="24" y="64" font-family="monospace" font-size="30">LIGHT MODE</text>
+  <text class="fg lbl-dark"  x="24" y="64" font-family="monospace" font-size="30">DARK MODE</text>
+</svg>

@@ -1,0 +1,56 @@
+# goreleaser 設定：一次產出六個平台的二進位。
+#
+# 本機試跑（不會發布任何東西）：
+#   goreleaser release --snapshot --clean
+#
+# 正式發布由 .github/workflows/release.yml 在打 tag 時觸發。
+version: 2
+
+project_name: svgcast
+
+before:
+  hooks:
+    - go mod tidy
+    # -short 跳過 50k 事件的效能測試；完整版由 ci.yml 跑，發版不該卡在 runner 快慢。
+    - go test ./... -count=1 -short
+
+builds:
+  - id: svgcast
+    main: ./cmd/svgcast
+    binary: svgcast
+    env:
+      # 純 Go，不需要 C 編譯器——交叉編譯才會這麼簡單，
+      # 也讓使用者拿到的是單一檔案、沒有動態連結相依。
+      - CGO_ENABLED=0
+    goos: [linux, darwin, windows]
+    goarch: [amd64, arm64]
+    ldflags:
+      - -s -w -X main.version={{.Version}}
+
+archives:
+  - id: default
+    # v2 的欄位名是 formats（複數）
+    formats: [tar.gz]
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+    name_template: >-
+      {{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}
+    files:
+      - README.md
+      - LICENSE
+
+checksum:
+  name_template: checksums.txt
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^chore:"
+
+release:
+  draft: false
+  prerelease: auto

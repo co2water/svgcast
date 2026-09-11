@@ -1,0 +1,9 @@
+# 統一用 LF。專案在 Windows 上開發，但發布給所有平台；
+# golden 測試逐位元比對 SVG，CRLF 混進去會讓 CI 在 Linux 上炸掉。
+* text=auto eol=lf
+
+# 二進位與素材
+*.svg text eol=lf
+*.cast text eol=lf
+*.ttf binary
+*.png binary

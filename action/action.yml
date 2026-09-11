@@ -1,0 +1,44 @@
+# GitHub Action：在 CI 裡把 .cast 重新產生成 SVG。
+#
+# ⭐ 為什麼要有這個（來自分發策略 A5）：
+#
+#	沒有它，svgcast 是「發版時跑一次」的工具——使用頻率很低，
+#	而低頻工具很難累積使用者。
+#
+#	有了它，demo 會在每次 push 時自動重生，工具從一次性變成 CI 的一部分。
+#	Actions Marketplace 也是一個獨立於 npm/brew 的發現管道。
+name: 'svgcast'
+description: 'Render asciinema recordings to animated SVG'
+author: 'svgcast'
+
+branding:
+  icon: 'film'
+  color: 'purple'
+
+inputs:
+  input:
+    description: 'Input .cast file, or a glob such as docs/*.cast'
+    required: true
+  output-dir:
+    description: 'Directory to write .svg files into (default: alongside the input)'
+    required: false
+    default: ''
+  version:
+    description: 'svgcast version to use, e.g. v0.1.0 (default: latest)'
+    required: false
+    default: 'latest'
+  args:
+    description: 'Extra flags passed to svgcast, e.g. "--theme dark --speed 1.5"'
+    required: false
+    default: ''
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Install svgcast
+      shell: bash
+      run: ${{ github.action_path }}/install.sh "${{ inputs.version }}"
+
+    - name: Render
+      shell: bash
+      run: ${{ github.action_path }}/render.sh "${{ inputs.input }}" "${{ inputs.output-dir }}" ${{ inputs.args }}

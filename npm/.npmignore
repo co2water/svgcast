@@ -1,0 +1,4 @@
+bin/svgcast
+bin/svgcast.exe
+*.tar.gz
+*.zip
