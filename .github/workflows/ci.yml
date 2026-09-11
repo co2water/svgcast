@@ -21,7 +21,10 @@ jobs:
           go-version: '1.23'
           cache: true
       - run: go build ./...
-      - run: go test ./... -race -count=1
+      # race 偵測器讓 5 萬事件的效能測試慢 6 倍以上（本機 5 s → runner 33 s），
+      # 拿它量時間沒有意義。正確性用 -race + -short 跑全部；效能測試另外不帶 race 跑。
+      - run: go test ./... -race -short -count=1
+      - run: go test ./internal/render -run 'TestPerf' -count=1 -v
       - run: go vet ./...
 
   fmt:

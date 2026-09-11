@@ -25,7 +25,9 @@ func systemFont(t *testing.T) string {
 			`C:\Windows\Fonts\arial.ttf`,
 		}
 	case "darwin":
+		// Menlo 是 .ttc 集合——刻意留著，同時驗證 parseFontOrCollection 的路徑。
 		candidates = []string{
+			"/System/Library/Fonts/Supplemental/Arial.ttf",
 			"/System/Library/Fonts/Menlo.ttc",
 			"/Library/Fonts/Arial.ttf",
 		}

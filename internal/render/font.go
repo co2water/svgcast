@@ -50,9 +50,9 @@ func loadGlyphLib(path string, runes map[rune]bool, fontSize float64) (*glyphLib
 	if err != nil {
 		return nil, fmt.Errorf("讀取字型 %s: %w", path, err)
 	}
-	f, err := sfnt.Parse(data)
+	f, err := parseFontOrCollection(data)
 	if err != nil {
-		return nil, fmt.Errorf("解析字型 %s: %w（只支援 TrueType/OpenType）", path, err)
+		return nil, fmt.Errorf("parsing font %s: %w (TrueType/OpenType .ttf/.otf/.ttc)", path, err)
 	}
 
 	lib := &glyphLib{
@@ -86,6 +86,25 @@ func loadGlyphLib(path string, runes map[rune]bool, fontSize float64) (*glyphLib
 		lib.ids[r] = fmt.Sprintf("g%d", len(lib.order)-1)
 	}
 	return lib, nil
+}
+
+// parseFontOrCollection 同時接受單一字型與字型集合（.ttc）。
+//
+// macOS 上很多字型是 .ttc（Menlo、Nerd Font 的某些打包），sfnt.Parse 會回
+// 「invalid single font (data is a font collection)」——CI 的 macOS runner 第一次就撞到。
+// 集合取第一個字型；要選其他索引是 v2 的事。
+func parseFontOrCollection(data []byte) (*sfnt.Font, error) {
+	if f, err := sfnt.Parse(data); err == nil {
+		return f, nil
+	}
+	c, err := sfnt.ParseCollection(data)
+	if err != nil {
+		return nil, err
+	}
+	if c.NumFonts() == 0 {
+		return nil, fmt.Errorf("font collection is empty")
+	}
+	return c.Font(0)
 }
 
 func (l *glyphLib) has(r rune) bool {
