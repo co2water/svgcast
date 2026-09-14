@@ -46,6 +46,22 @@ fs.mkdirSync(binDir, { recursive: true });
 const binName = goos === 'windows' ? 'svgcast.exe' : 'svgcast';
 const binPath = path.join(binDir, binName);
 
+// Windows 上不能直接叫 `tar`：npm 用 cmd.exe 跑腳本，裝了 Git for Windows 的機器
+// PATH 上排在前面的是 GNU tar，它不會解 zip——第一次本機測試就是這樣炸的。
+// 能解 zip 的是 System32 的 bsdtar（Win10 1803 起內建），所以用絕對路徑；
+// 再不行就退到 PowerShell 的 Expand-Archive（PowerShell 5 起內建）。
+function extractZipWindows(zipPath, destDir) {
+  const sysTar = path.join(process.env.SystemRoot || 'C:\\Windows', 'System32', 'tar.exe');
+  try {
+    execFileSync(sysTar, ['-xf', zipPath, '-C', destDir], { stdio: 'ignore' });
+    return;
+  } catch (_) { /* fall through */ }
+  execFileSync('powershell.exe', [
+    '-NoProfile', '-NonInteractive', '-Command',
+    `Expand-Archive -LiteralPath '${zipPath.replace(/'/g, "''")}' -DestinationPath '${destDir.replace(/'/g, "''")}' -Force`,
+  ], { stdio: 'ignore' });
+}
+
 function get(u, cb, depth = 0) {
   if (depth > 5) return fail('too many redirects');
   https.get(u, { headers: { 'User-Agent': 'svgcast-installer' } }, (res) => {
@@ -69,8 +85,7 @@ get(url, (res) => {
     out.close(() => {
       try {
         if (ext === 'zip') {
-          // Windows 內建 tar 也能解 zip（Win10 1803 之後）
-          execFileSync('tar', ['-xf', tmp, '-C', binDir], { stdio: 'ignore' });
+          extractZipWindows(tmp, binDir);
         } else {
           execFileSync('tar', ['-xzf', tmp, '-C', binDir], { stdio: 'ignore' });
         }
