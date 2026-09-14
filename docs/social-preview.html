@@ -1,0 +1,26 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>svgcast social preview</title>
+<!--
+  GitHub Social preview 圖（Settings → Social preview，建議 1280×640）。
+  用瀏覽器開這頁、視窗設 1280×640、截圖存成 PNG 上傳即可。
+  不進 README，只是產圖用的素材。
+-->
+<style>
+  html,body{margin:0;width:1280px;height:640px;overflow:hidden;background:#0d1117;color:#e6edf3;
+    font-family:"Segoe UI",system-ui,-apple-system,sans-serif}
+  .wrap{position:relative;width:1280px;height:640px}
+  .title{position:absolute;left:72px;top:64px;font-size:64px;font-weight:800;letter-spacing:-1px}
+  .sub{position:absolute;left:72px;top:150px;font-size:30px;color:#8b949e;max-width:1140px;line-height:1.35}
+  .sub b{color:#e6edf3;font-weight:600}
+  .demo{position:absolute;left:72px;top:262px;width:1136px;border:1px solid #30363d;border-radius:12px;overflow:hidden;background:#0d1117}
+  .demo img{display:block;width:1136px}
+  .chip{position:absolute;right:72px;top:80px;font-size:22px;color:#8b949e;font-family:ui-monospace,Consolas,monospace}
+</style>
+<div class="wrap">
+  <div class="title">svgcast</div>
+  <div class="chip">npx svgcast demo.cast -o demo.svg</div>
+  <div class="sub">Stop putting blurry GIFs in your README. asciinema recordings → animated SVGs
+    <b>3–8× smaller</b>, crisp at any zoom, <b>dark-mode aware</b>. One file.</div>
+  <div class="demo"><img src="demo-still.svg" alt=""></div>
+</div>

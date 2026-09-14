@@ -24,13 +24,13 @@ English | [繁體中文](README.zh-TW.md)
 ## Install
 
 ```bash
+npx svgcast demo.cast -o demo.svg                          # no install
+brew install co2water/tap/svgcast                          # macOS / Linux
 go install github.com/co2water/svgcast/cmd/svgcast@latest
 ```
 
 Or grab a binary from [Releases](https://github.com/co2water/svgcast/releases) — a single static
 file for macOS, Linux and Windows, no dependencies.
-
-`npx svgcast` and `brew install co2water/tap/svgcast` ship with v0.1.0.
 
 ## Usage
 
