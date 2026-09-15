@@ -97,6 +97,23 @@ svgcast demo.cast -o demo.svg --embed-font ~/.fonts/FiraCodeNerdFont-Regular.ttf
 
 Regular text stays as `<text>`, so it remains selectable.
 
+## Long recordings
+
+A README image is an `<img>`: no script runs and no clicks reach the SVG, so it can never
+have a real scrubber there. Two things still help:
+
+```bash
+svgcast long.cast -o long.svg --progress   # thin progress bar, works inside <img>
+svgcast long.cast -o long.svg --controls   # + click the bar to seek, click to pause, space / ← →
+```
+
+`--controls` embeds a small script, so it only works where the SVG is opened **as a
+document**: a link to the file on your own site or GitHub Pages, an `<object>` or
+`<iframe>`, or a local file. It does nothing inside `<img>`, and nothing on
+`raw.githubusercontent.com` either — GitHub serves raw files with a `sandbox`
+Content-Security-Policy that blocks scripts. Pair either flag with `--idle-time-limit`
+to keep long recordings small.
+
 ## Keep your demo fresh in CI
 
 A demo that drifts from the tool is worse than no demo. This action re-renders your `.cast`
@@ -121,6 +138,8 @@ files on every push:
 --idle-time-limit <dur>  collapse long pauses, e.g. 2s
 --no-loop                play once instead of looping
 --no-cursor              don't draw the cursor block
+--progress               thin progress bar along the bottom (works in <img>)
+--controls               click to seek / pause, keyboard; needs the SVG opened as a document
 --font <family>          font-family fallback chain
 ```
 

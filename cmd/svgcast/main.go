@@ -60,6 +60,8 @@ func run() error {
 		from      = fs.String("from", "", "start at this time, e.g. 5s or 1m30s")
 		to        = fs.String("to", "", "stop at this time, e.g. 5s or 1m30s")
 		idle      = fs.String("idle-time-limit", "", "cap idle gaps at this duration, e.g. 2s")
+		progress  = fs.Bool("progress", false, "draw a thin progress bar along the bottom (works in README <img> too)")
+		controls  = fs.Bool("controls", false, "click the bar to seek, click the terminal to pause, space/arrow keys; needs the SVG opened as a document, implies --progress")
 		showVer   = fs.Bool("version", false, "print version")
 	)
 
@@ -108,6 +110,8 @@ func run() error {
 	opts.Speed = *speed
 	opts.Loop = !*noLoop
 	opts.Cursor = !*noCursor
+	opts.Progress = *progress || *controls
+	opts.Controls = *controls
 
 	switch opts.Theme {
 	case "auto", "light", "dark":
@@ -300,6 +304,7 @@ Examples:
   svgcast demo.cast -o demo.svg
   svgcast demo.cast -o demo.svg --still preview.svg --speed 1.5
   svgcast demo.cast -o demo.svg --embed-font ~/.fonts/FiraCodeNerdFont-Regular.ttf
+  svgcast long.cast -o long.svg --progress --idle-time-limit 2s
 
 Flags:
 `)

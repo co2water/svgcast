@@ -569,6 +569,16 @@ func (a *Animator) Write(w io.Writer) error {
 		content = `<g class="vp">` + content + `</g>`
 	}
 
+	// 進度條與控制列放在 viewport 之外：它們不跟著內容捲動。
+	if a.opts.Progress || a.opts.Controls {
+		var tail strings.Builder
+		writeProgress(&tail, &css, g, a.opts, total)
+		if a.opts.Controls {
+			writeControls(&tail, total)
+		}
+		content += tail.String()
+	}
+
 	return writeDocument(w, g, a.opts, cs, content, css.String(), lib)
 }
 

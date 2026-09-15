@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="696" height="432" viewBox="0 0 696 432" xml:space="preserve"><style>:root{--bg:#ffffff;--fg:#24292f;--cur:#24292f;--c0:#24292f;--c1:#cf222e;--c2:#116329;--c3:#4d2d00;--c4:#0969da;--c5:#8250df;--c6:#1b7c83;--c7:#6e7781;--c8:#57606a;--c9:#a40e26;--c10:#1a7f37;--c11:#633c01;--c12:#218bff;--c13:#a475f9;--c14:#3192aa;--c15:#8c959f;}@media(prefers-color-scheme:dark){:root{--bg:#0d1117;--fg:#e6edf3;--cur:#e6edf3;--c0:#484f58;--c1:#ff7b72;--c2:#3fb950;--c3:#d29922;--c4:#58a6ff;--c5:#bc8cff;--c6:#39c5cf;--c7:#b1bac4;--c8:#6e7681;--c9:#ffa198;--c10:#56d364;--c11:#e3b341;--c12:#79c0ff;--c13:#d2a8ff;--c14:#56d4dd;--c15:#f0f6fc;}}text{font-family:"Cascadia Code","JetBrains Mono","Fira Code","SF Mono",Menlo,Consolas,"DejaVu Sans Mono",monospace;font-size:14px;white-space:pre;fill:var(--fg)}.cur{fill:var(--cur);opacity:.65}.b{font-weight:700}.i{font-style:italic}.u{text-decoration:underline}.d{opacity:.6}.a{opacity:0;animation-duration:3.5s;animation-timing-function:steps(1,end);animation-iteration-count:infinite}@keyframes k0{0%{opacity:0}11%{opacity:1}}.k0{animation-name:k0}@keyframes k1{0%{opacity:0}24%{opacity:1}}.k1{animation-name:k1}@keyframes k2{0%{opacity:0}29%{opacity:1}}.k2{animation-name:k2}@keyframes k3{0%{opacity:0}66%{opacity:1}}.k3{animation-name:k3}@keyframes cur{0%{transform:translate(0,0)}10.86%{transform:translate(84px,0)}23.71%{transform:translate(-16.8px,17px)}24%{transform:translate(-16.8px,34px)}28.57%{transform:translate(0,34px)}65.71%{transform:translate(-16.8px,51px)}}.cur{animation:cur 3.5s steps(1,end) infinite}.pgt{fill:var(--fg);opacity:.15}.pg{fill:var(--fg);opacity:.45;transform-origin:0 0;animation:pg 3.5s linear infinite}@keyframes pg{from{transform:scaleX(0)}to{transform:scaleX(1)}}.pgh{fill:none;pointer-events:all;cursor:pointer}</style><rect width="696" height="432" fill="var(--bg)"/><text x="12" y="25.4">$</text><g class="a k0"><text x="28.8" y="25.4" textLength="33.6">echo</text><text x="70.8" y="25.4" textLength="42">hello</text></g><g class="a k1"><text x="12" y="42.4" textLength="42">hello</text></g><g class="a k2"><text x="12" y="59.4">$</text></g><g class="a k3"><text x="28.8" y="59.4" textLength="33.6">exit</text></g><rect class="cur" x="28.8" y="12" width="8.4" height="17"/><g class="pgw" transform="translate(12,426.5)"><rect class="pgt" width="672" height="3" rx="1.5"/><rect class="pg" width="672" height="3" rx="1.5"/><rect class="pgh" y="-6.5" width="672" height="16"/></g><script>//<![CDATA[
+(function(){var T=3500,s=document.documentElement,h=s.querySelector('.pgh');if(!h||!document.getAnimations)return;
+var A=function(){return document.getAnimations()},drag=false;
+function at(t){A().forEach(function(a){a.currentTime=t})}
+function seek(x){var r=h.getBoundingClientRect();at(Math.min(1,Math.max(0,(x-r.left)/r.width))*T)}
+function toggle(){var a=A();if(!a.length)return;var p=a[0].playState==='paused';a.forEach(function(x){p?x.play():x.pause()})}
+h.addEventListener('pointerdown',function(e){drag=true;h.setPointerCapture(e.pointerId);seek(e.clientX);e.preventDefault()});
+h.addEventListener('pointermove',function(e){if(drag)seek(e.clientX)});
+h.addEventListener('pointerup',function(){drag=false});
+h.addEventListener('pointercancel',function(){drag=false});
+s.addEventListener('click',function(e){if(e.target!==h)toggle()});
+s.addEventListener('keydown',function(e){
+if(e.key===' '){toggle();e.preventDefault();return}
+if(e.key!=='ArrowRight'&&e.key!=='ArrowLeft')return;
+var a=A();if(!a.length)return;var step=Math.max(1000,T/20),t=(a[0].currentTime||0)+(e.key==='ArrowRight'?step:-step);
+at(((t%T)+T)%T);e.preventDefault()});
+s.setAttribute('tabindex','0');s.style.outline='none';
+})();
+//]]></script></svg>

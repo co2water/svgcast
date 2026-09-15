@@ -94,6 +94,22 @@ svgcast demo.cast -o demo.svg --embed-font ~/.fonts/FiraCodeNerdFont-Regular.ttf
 
 一般文字仍然是 `<text>`，維持可選取。
 
+## 長錄影
+
+README 裡的圖片是 `<img>`：不執行 script、點擊也傳不進 SVG，所以那裡永遠不可能有真正的
+拖曳條。但有兩件事仍然幫得上忙：
+
+```bash
+svgcast long.cast -o long.svg --progress   # 底部一條細進度條，<img> 裡也會動
+svgcast long.cast -o long.svg --controls   # 再加上：點進度條跳到該時間、點畫面暫停、空白鍵與 ← →
+```
+
+`--controls` 會嵌一小段 script，所以只有把 SVG **當成文件**開啟時才有作用：
+自己網站或 GitHub Pages 上的檔案連結、`<object>` 或 `<iframe>`、本機檔案。
+在 `<img>` 裡它什麼都不做；在 `raw.githubusercontent.com` 上也不行——GitHub 送出原始檔時
+帶著 `sandbox` 的 Content-Security-Policy，script 會被擋掉。長錄影請搭配 `--idle-time-limit`
+把體積壓下來。
+
 ## 讓 demo 在 CI 裡自動更新
 
 跟工具本身脫節的 demo，比沒有 demo 更糟。這個 action 會在每次 push 時重新產生你的 `.cast`：
@@ -117,6 +133,8 @@ svgcast demo.cast -o demo.svg --embed-font ~/.fonts/FiraCodeNerdFont-Regular.ttf
 --idle-time-limit <dur>  把超過此長度的停頓壓掉，例如 2s
 --no-loop                只播一次，不循環
 --no-cursor              不畫游標方塊
+--progress               底部細進度條（<img> 裡也會動）
+--controls               點選跳時間／暫停、鍵盤；需要把 SVG 當文件開啟
 --font <family>          font-family 的 fallback 鏈
 ```
 

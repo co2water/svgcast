@@ -98,6 +98,12 @@ type Options struct {
 
 	// Cursor 決定要不要畫游標方塊。
 	Cursor bool
+
+	// Progress 在底部畫一條純 CSS 的進度條（<img> 情境也會動）。
+	// Controls 再加上點選跳時間、暫停、鍵盤——需要 script，只在 SVG 被當文件
+	// 開啟時有效；開了 Controls 就一定有進度條。細節見 controls.go。
+	Progress bool
+	Controls bool
 }
 
 // DefaultOptions 是不給任何旗標時的行為。
