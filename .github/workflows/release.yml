@@ -26,3 +26,44 @@ jobs:
           args: release --clean
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # npm 包裝器：等二進位都上了 Releases 才發，不然 postinstall 會抓不到檔。
+  #
+  # 用 npm 的 trusted publishing（OIDC）：沒有 token、不用 2FA 驗證碼，
+  # npmjs.com 那邊把「GitHub Actions · co2water/svgcast · release.yml」設成
+  # trusted publisher 就會放行，而且自動附 provenance。
+  # 需要 npm CLI ≥ 11.5.1，所以先升到最新。
+  npm:
+    needs: goreleaser
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: npm >= 11.5.1 (trusted publishing)
+        run: npm install -g npm@latest && npm -v
+
+      - name: npm/package.json version must match the tag
+        working-directory: npm
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          pkg="$(node -p "require('./package.json').version")"
+          if [ "$tag" != "$pkg" ]; then
+            echo "tag is v$tag but npm/package.json says $pkg"; exit 1
+          fi
+
+      - name: publish (skips a version that is already on npm)
+        working-directory: npm
+        run: |
+          v="$(node -p "require('./package.json').version")"
+          if npm view "svgcast@$v" version >/dev/null 2>&1; then
+            echo "svgcast@$v is already published, nothing to do"; exit 0
+          fi
+          npm publish --access public
